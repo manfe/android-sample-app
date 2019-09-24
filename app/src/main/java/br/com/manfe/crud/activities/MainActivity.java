@@ -13,6 +13,7 @@ import java.util.List;
 import br.com.manfe.crud.R;
 import br.com.manfe.crud.adapters.UserRecyclerViewAdapter;
 import br.com.manfe.crud.entities.User;
+import br.com.manfe.crud.utils.AppRoomDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,15 +28,13 @@ public class MainActivity extends AppCompatActivity {
         mUserRecycler = findViewById(R.id.recycler_users);
         mFab = findViewById(R.id.fab_new_user);
 
-        System.out.println("Testy" + mUserRecycler);
+        User u1 = new User("teste5@teste.com", "1235");
+        User u2 = new User("teste6@teste.com", "1235");
 
+        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u1);
+        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u2);
 
-        User u1 = new User("teste@teste.com", "1235");
-        User u2 = new User("teste@teste.com", "1235");
-
-        List<User> users = new ArrayList<User>();
-        users.add(u1);
-        users.add(u2);
+        List<User> users = AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getAllUsers();
 
         UserRecyclerViewAdapter userAdapter = new UserRecyclerViewAdapter(users);
 

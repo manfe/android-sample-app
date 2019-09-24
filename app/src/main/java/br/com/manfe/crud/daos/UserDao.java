@@ -17,12 +17,12 @@ public interface UserDao {
     @Query("DELETE FROM user_table")
     void deleteAll();
 
-    @Query("DELETE FROM user_table WHERE email = :email")
+    @Query("DELETE FROM user_table WHERE user_email = :email")
     void deleteUser(String email);
 
-    @Query("SELECT * FROM user_table ORDER BY email ASC")
+    @Query("SELECT * FROM user_table ORDER BY user_email ASC")
     List<User> getAllUsers();
 
-    @Query("SELECT * FROM user_table where uid = :email")
+    @Query("SELECT * FROM user_table where user_email = :email")
     User getUser(String email);
 }

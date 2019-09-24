@@ -17,9 +17,6 @@ public class User {
     @NonNull
     private String password;
 
-    public User() {
-    }
-
     public User(@NonNull String email, @NonNull String password) {
         this.email = email;
         this.password = password;
