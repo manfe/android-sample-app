@@ -22,7 +22,6 @@ public abstract class AppRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppRoomDatabase.class, "app_database")
-                            .allowMainThreadQueries()
                             .build();
                 }
             }

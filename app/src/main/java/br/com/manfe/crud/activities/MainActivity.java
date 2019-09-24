@@ -28,17 +28,22 @@ public class MainActivity extends AppCompatActivity {
         mUserRecycler = findViewById(R.id.recycler_users);
         mFab = findViewById(R.id.fab_new_user);
 
-        User u1 = new User("teste5@teste.com", "1235");
-        User u2 = new User("teste6@teste.com", "1235");
+        User u1 = new User("teste9@teste.com", "1235");
 
-        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u1);
-        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u2);
-
-        List<User> users = AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getAllUsers();
-
-        UserRecyclerViewAdapter userAdapter = new UserRecyclerViewAdapter(users);
-
+        UserRecyclerViewAdapter userAdapter = new UserRecyclerViewAdapter(new ArrayList<>());
         mUserRecycler.setAdapter(userAdapter);
+
+        new Thread(() -> {
+            AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u1);
+
+            List<User> users = AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getAllUsers();
+            userAdapter.setmUsers(users);
+        }).start();
+
+
+
+
+
 
     }
 }

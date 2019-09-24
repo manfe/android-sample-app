@@ -14,10 +14,16 @@ import java.util.List;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.ViewHolder> {
 
-    private final List<User> mValues;
+    private List<User> mUsers;
 
     public UserRecyclerViewAdapter(List<User> users) {
-        mValues = users;
+        mUsers = users;
+    }
+
+    // Método que recebe atualização e informa que o dataset foi atualizado
+    public void setmUsers(List<User> mUsers) {
+        this.mUsers = mUsers;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -29,9 +35,9 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        holder.mItem = mUsers.get(position);
         holder.mIdView.setText("" + (position + 1));
-        holder.mContentView.setText(mValues.get(position).getEmail());
+        holder.mContentView.setText(mUsers.get(position).getEmail());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +49,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mUsers.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
