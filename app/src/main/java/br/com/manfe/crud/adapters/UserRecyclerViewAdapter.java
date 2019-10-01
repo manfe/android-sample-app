@@ -2,12 +2,15 @@ package br.com.manfe.crud.adapters;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import br.com.manfe.crud.R;
+import br.com.manfe.crud.activities.EditUserActivity;
+import br.com.manfe.crud.activities.MainActivity;
 import br.com.manfe.crud.entities.User;
 
 import java.util.List;
@@ -23,7 +26,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     // Método que recebe atualização e informa que o dataset foi atualizado
     public void setmUsers(List<User> mUsers) {
         this.mUsers = mUsers;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -36,13 +38,15 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mUsers.get(position);
-        holder.mIdView.setText("" + (position + 1));
+        holder.mIdView.setText("" + holder.mItem.getUid());
         holder.mContentView.setText(mUsers.get(position).getEmail());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Clicou no item.");
+                Intent intent = new Intent(v.getContext(), EditUserActivity.class);
+                intent.putExtra("email", holder.mItem.getEmail());
+                v.getContext().startActivity(intent);
             }
         });
     }

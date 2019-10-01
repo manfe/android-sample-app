@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import br.com.manfe.crud.daos.UserDao;
 import br.com.manfe.crud.entities.User;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 2, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
     public abstract UserDao userDAO();
@@ -22,6 +22,7 @@ public abstract class AppRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppRoomDatabase.class, "app_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
