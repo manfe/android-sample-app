@@ -1,13 +1,16 @@
 package br.com.manfe.crud.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         mUserRecycler = findViewById(R.id.recycler_users);
         mFab = findViewById(R.id.fab_new_user);
 
-        User u1 = new User("teste12@teste.com", "1235");
-
         userAdapter = new UserRecyclerViewAdapter(new ArrayList<>());
         mUserRecycler.setAdapter(userAdapter);
 
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<User> users) {
                 userAdapter.setmUsers(users);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.mainActivityConstraintLayout), "Lista atualizada.", Snackbar.LENGTH_SHORT);
+                snackbar.show();
             }
         });
 
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, NewUserActivity.class);
             startActivity(intent);
         });
+
+
+
 
 
     }
