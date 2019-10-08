@@ -2,9 +2,9 @@ package br.com.manfe.crud.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +13,7 @@ import br.com.manfe.crud.R;
 import br.com.manfe.crud.entities.User;
 import br.com.manfe.crud.utils.AppRoomDatabase;
 
-public class EditUserActivity extends AppCompatActivity {
+public class NewUserActivity extends AppCompatActivity {
 
     EditText mEditEmail;
     EditText mEditPassword;
@@ -24,37 +24,29 @@ public class EditUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user);
-
-        mEditEmail = findViewById(R.id.editTextEmail);
-        mEditPassword = findViewById(R.id.editTextPassword);
-        mBtnSalvar = findViewById(R.id.btnSalvar);
-        mBtnCancelar = findViewById(R.id.btnCancelar);
-
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-
-        new Thread(() -> {
-            user = AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getUser(email);
-            mEditEmail.setText(user.getEmail());
-            mEditPassword.setText(user.getPassword());
-        }).start();
+        setContentView(R.layout.activity_new_user);
 
 
+        mEditEmail = findViewById(R.id.editTextNewUserEmail);
+        mEditPassword = findViewById(R.id.editTextNewUserPassword);
+        mBtnSalvar = findViewById(R.id.btnNewUserSalvar);
+        mBtnCancelar = findViewById(R.id.btnNewUserCancelar);
+
+        // MODO JAVA antigo para setar uma nova classe anônima para o botão
         mBtnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = mEditEmail.getText().toString();
                 String password = mEditPassword.getText().toString();
 
-                user.setEmail(email);
-                user.setPassword(password);
+                User user = new User(email, password);
+
 
                 new AsyncTask<Void, Void, Boolean>() {
 
                     @Override
                     protected Boolean doInBackground(Void... voids) {
-                        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().updateUser(user);
+                        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(user);
                         return true;
                     }
 
@@ -64,16 +56,15 @@ public class EditUserActivity extends AppCompatActivity {
                         finish();
                     }
                 }.execute();
+
+                finish();
             }
         });
 
+        // MODO NOVO E MAIS LIMPO, PORÉM AMBOS FUNCIONAM.
         mBtnCancelar.setOnClickListener((view) -> {
             finish();
         });
-
-
-
-
 
     }
 }

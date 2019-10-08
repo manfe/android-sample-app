@@ -36,12 +36,6 @@ public class MainActivity extends AppCompatActivity {
         userAdapter = new UserRecyclerViewAdapter(new ArrayList<>());
         mUserRecycler.setAdapter(userAdapter);
 
-        new Thread(() -> {
-            // TODO: alterar para a tela de cadastro.
-            AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u1);
-
-        }).start();
-
         // ADICIONADO LIVEDATA (OBSERVER) NOS DADOS, ASSIM QUANDO HOUVER QUALQUER
         // ALTERAÇÃO VAI ATUALIZAR O ADAPTER, QUE IRÁ ATUALIZAR A ACTIVITY
         // NOTA IMPORTANTE: QUANDO ADICIONADO O MÉTODO OBSERVE NÃO É NECESSÁRIO
@@ -51,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<User> users) {
                 userAdapter.setmUsers(users);
             }
+        });
+
+        mFab.setOnClickListener((view) -> {
+            Intent intent = new Intent(this, NewUserActivity.class);
+            startActivity(intent);
         });
 
 
