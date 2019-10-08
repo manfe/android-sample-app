@@ -20,8 +20,8 @@ public interface UserDao {
     @Query("DELETE FROM user_table")
     void deleteAll();
 
-    @Query("DELETE FROM user_table WHERE user_email = :email")
-    void deleteUser(String email);
+    @Query("DELETE FROM user_table WHERE uid = :uid")
+    void deleteUser(int uid);
 
     @Query("SELECT * FROM user_table ORDER BY uid ASC")
     LiveData<List<User>> getAllUsers();

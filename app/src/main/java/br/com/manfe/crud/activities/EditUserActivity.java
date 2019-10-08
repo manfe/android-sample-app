@@ -19,6 +19,7 @@ public class EditUserActivity extends AppCompatActivity {
     EditText mEditPassword;
     Button mBtnSalvar;
     Button mBtnCancelar;
+    Button mBtnDeletar;
     User user;
 
     @Override
@@ -30,6 +31,7 @@ public class EditUserActivity extends AppCompatActivity {
         mEditPassword = findViewById(R.id.editTextPassword);
         mBtnSalvar = findViewById(R.id.btnSalvar);
         mBtnCancelar = findViewById(R.id.btnCancelar);
+        mBtnDeletar = findViewById(R.id.btnDeleteUser);
 
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
@@ -71,9 +73,22 @@ public class EditUserActivity extends AppCompatActivity {
             finish();
         });
 
+        mBtnDeletar.setOnClickListener((view) -> {
+            new AsyncTask<Void, Void, Boolean>() {
 
+                @Override
+                protected Boolean doInBackground(Void... voids) {
+                    AppRoomDatabase.getDatabase(getBaseContext()).userDAO().deleteUser(user.getUid());
+                    return true;
+                }
 
-
+                @Override
+                protected void onPostExecute(Boolean aBoolean) {
+                    super.onPostExecute(aBoolean);
+                    finish();
+                }
+            }.execute();
+        });
 
     }
 }
