@@ -26,6 +26,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     // Método que recebe atualização e informa que o dataset foi atualizado
     public void setmUsers(List<User> mUsers) {
         this.mUsers = mUsers;
+        notifyDataSetChanged();
     }
 
     @Override

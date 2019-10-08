@@ -1,5 +1,6 @@
 package br.com.manfe.crud.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -22,8 +23,8 @@ public interface UserDao {
     @Query("DELETE FROM user_table WHERE user_email = :email")
     void deleteUser(String email);
 
-    @Query("SELECT * FROM user_table ORDER BY user_email ASC")
-    List<User> getAllUsers();
+    @Query("SELECT * FROM user_table ORDER BY uid ASC")
+    LiveData<List<User>> getAllUsers();
 
     @Query("SELECT * FROM user_table where user_email = :email")
     User getUser(String email);

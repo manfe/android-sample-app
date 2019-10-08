@@ -1,6 +1,7 @@
 package br.com.manfe.crud.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -36,32 +37,22 @@ public class MainActivity extends AppCompatActivity {
         mUserRecycler.setAdapter(userAdapter);
 
         new Thread(() -> {
+            // TODO: alterar para a tela de cadastro.
             AppRoomDatabase.getDatabase(getBaseContext()).userDAO().insert(u1);
-            List<User> users = AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getAllUsers();
-
-            runOnUiThread(() -> {
-                userAdapter.setmUsers(users);
-                userAdapter.notifyDataSetChanged();
-            });
-        }).start();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        new Thread(() -> {
-            List<User> users = AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getAllUsers();
-
-            // COMO A THREAD NÃO PODE MODIFICAR A VIEW, É UTILIZADO A PRÓPRIA THREAD DA UI
-            // QUE É ESSA ABAIXO, DESSA FORMA CHAMAMOS A THREAD DA UI DENTRO DA THREAD QUE
-            // EXECUTOU O PROCESSO DE CONEXÃO COM O BANCO.
-            runOnUiThread(() -> {
-                userAdapter.setmUsers(users);
-                userAdapter.notifyDataSetChanged();
-            });
 
         }).start();
+
+        // ADICIONADO LIVEDATA (OBSERVER) NOS DADOS, ASSIM QUANDO HOUVER QUALQUER
+        // ALTERAÇÃO VAI ATUALIZAR O ADAPTER, QUE IRÁ ATUALIZAR A ACTIVITY
+        // NOTA IMPORTANTE: QUANDO ADICIONADO O MÉTODO OBSERVE NÃO É NECESSÁRIO
+        // ESTAR DENTRO DE UMA THREAD, TAMBÉM NÃO SENDO NECESSÁRIO O USO DO onResume()
+        AppRoomDatabase.getDatabase(getBaseContext()).userDAO().getAllUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                userAdapter.setmUsers(users);
+            }
+        });
+
 
     }
 }
